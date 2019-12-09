@@ -2,11 +2,17 @@
 package com.neosemantix.leetcode;
 
 /**
+ * ListNode from LeetCode for merging K sorted lists.
+ * 
  * @author umeshpatil
  *
  */
 public class ListNode {
+	
     int val;
     ListNode next;
-    ListNode(int x) { val = x; }
+    
+    ListNode(int x) { 
+    	val = x; 
+    }
 }

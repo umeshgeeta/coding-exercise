@@ -10,6 +10,10 @@ import java.util.List;
  */
 public class MergeKLists2 {
     
+    /**
+     * Wrapper on ListNode so that we know from which list this node has come.
+     *
+     */
     private static class ListNodeIndex  {
         ListNode node;
         int index;	// in which list number we find this node
@@ -19,6 +23,9 @@ public class MergeKLists2 {
         }
     }
     
+    /**
+     * Tracks current minimum for every list.
+     */
     private List<ListNodeIndex> currentMins;
     
     public ListNode mergeKLists(ListNode[] lists) {
@@ -31,7 +38,6 @@ public class MergeKLists2 {
             	currentMins.add(new ListNodeIndex(lists[0], 0));
                 whereInList[0] = lists[0];
             }
-            
             // add / insert rests of the nodes
             for(int k=1; k<lists.length; k++){
             	if (lists[k] != null) {
@@ -39,7 +45,6 @@ public class MergeKLists2 {
                     insert(lists[k], k);
             	}
             }
-            printCurrentMins();
             ListNode whereInMergedList = null;	
             while (currentMins.size() > 0){
             	// minimum of the first elements of all list is the minimum of the merged list
@@ -54,31 +59,35 @@ public class MergeKLists2 {
             	}
                 int minIndex = wrapperOfMinNode.index;
                 ListNode minAdded = whereInList[minIndex];   // already merged 
-                
                 int nextVal = Integer.MAX_VALUE;
                 if (currentMins.size() > 0){
                     nextVal = currentMins.get(0).node.val;
                 }
-                
-                while (minAdded.next != null && minAdded.next.val <= nextVal){
-                	System.out.println("minAdded.next: " + minAdded.next + " minAdded.next.val: " + minAdded.next.val);
+                // see if more can be packed from the list from where we picked the recent minimum
+                while (minAdded != null && minAdded.next != null && minAdded.next.val <= nextVal){
                 	whereInMergedList.next = minAdded.next;
                 	whereInMergedList = whereInMergedList.next;
                     minAdded = minAdded.next;
                 }
-                if (minAdded.next != null){
+                // add the next minimum for the list from where we picked the most recent one
+                if (minAdded != null && minAdded.next != null){
                     insert(minAdded.next, minIndex);
                 }
-                
-                whereInList[minIndex] = minAdded.next;
-                
-                printCurrentMins();
+                // also track how far we have scanned in the given list
+                if (minAdded != null){
+                    whereInList[minIndex] = minAdded.next;
+                }
             }
-            System.out.println("outside of while loop");
         }
         return mergedList;
     }
     
+    /**
+     * Insert a new minimum to the queue of minimums we retain for all lists.
+     * 
+     * @param ls
+     * @param index
+     */
     private void insert(ListNode ls, int index){
         int minsFoundSoFar = currentMins.size();
         boolean inserted = false;
