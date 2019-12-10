@@ -42,6 +42,9 @@ package com.neosemantix.leetcode;
  * 
  * Use https://www.freeformatter.com/java-regex-tester.html to get the right regular expression.
  * 
+ * Needed to add special handling for numbers starting with '.' and ending with '.' as well as
+ * those starting by 'e'.
+ * 
  * @author umeshpatil
  *
  */
