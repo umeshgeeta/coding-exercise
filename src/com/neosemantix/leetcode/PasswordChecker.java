@@ -8,6 +8,31 @@ import java.util.Map;
 import java.util.Set;
 
 /**
+ * Problem: Strong Password (Leetcode: https://leetcode.com/problems/strong-password-checker/)
+ * 
+ * A password is considered strong if below conditions are all met:
+ * It has at least 6 characters and at most 20 characters.
+ * It must contain at least one lowercase letter, at least one uppercase letter, 
+ * and at least one digit.
+ * It must NOT contain three repeating characters in a row 
+ * ("...aaa..." is weak, but "...aa...a..." is strong, assuming other conditions are met).
+ * 
+ * Write a function strongPasswordChecker(s), that takes a string s as input, 
+ * and return the MINIMUM change required to make s a strong password. 
+ * If s is already strong, return 0.
+ * 
+ * Insertion, deletion or replace of any one character are all considered as one change.
+ * 
+ * Solution: We divide the problem in 3 parts: when input is smaller than 6 (we need to add),
+ * 				when input is of length 6 (only replacement) and when the input is larger
+ * 				than 6 when we have to chop the string (combination of delete and replacement).
+ * 
+ * 				Major implementation is for the 3rd case since we need to evaluate optimal
+ * 				solution between character deletion and character replacement. We compute
+ * 				number of transformations needed in both strategies - A) replacement substituted
+ * 				by deletes and B) greedy 'delete' followed by mandatory replacements. 
+ * 				We pick minimum of these 2 strategies as the answer.
+ * 
  * @author umeshpatil
  *
  */
@@ -20,6 +45,11 @@ public class PasswordChecker {
 	boolean foundUpperCase = false;
 	boolean foundDigit = false;
 
+	/**
+	 * @param s User input string.
+	 * @return Minimum number of transformations needed to change the
+	 * 			argument to confirm as a strong password as per guidelines.
+	 */
 	public int strongPasswordChecker(String s) {
 		int result = 0;
 		if (s == null || s.length() == 0) {
@@ -130,6 +160,9 @@ public class PasswordChecker {
 		return result;
 	}
 	
+	/**
+	 * Initialize internal map so that in the 'main' we can test multiple strings.
+	 */
 	private void initialize() {
 		sameCharSubStrs = new HashMap<Integer, Integer>();
 		foundLowerCase = false;
@@ -161,7 +194,19 @@ public class PasswordChecker {
 		return result;
 	}
 	
-	
+	/**
+	 * Find occasions where instead of 'replacing' a character we can undertake
+	 * deletion to achieve substring without 3 contagious same characters.
+	 * 
+	 * For example for substring 'aaa' we can replace last char to make it 'aaY'.
+	 * Alternatively we can delete the last char and make it acceptable 'aa'.
+	 * 
+	 * Things start getting tricky when substring is of size more than 3 or more
+	 * than multiple of 3. For substring 'aaaa' we need to delete 2 while for 
+	 * 'aaaaa' we need to delete to 3 to achieve acceptable resultant substring.
+	 * 
+	 * @return int
+	 */
 	private List<Integer> substitutableDeletes() {
 		List<Integer> rs = new ArrayList<Integer>();
 		if (!sameCharSubStrs.isEmpty()) {
@@ -195,6 +240,12 @@ public class PasswordChecker {
 		return rs;
 	}
 	
+	/**
+	 * We determine how many replacements are needed so that there is no block
+	 * of same characters of size 3 or more.
+	 * 
+	 * @return int
+	 */
 	private int replacementsNeeded() {
 		if (sameCharSubStrs.isEmpty()) {
 			// nothing left
@@ -221,6 +272,12 @@ public class PasswordChecker {
 		}
 	}
 	
+	/**
+	 * Here we consume allowed number of 'delete characters' to break 'same char chunks' of
+	 * size 3 or more.
+	 *  
+	 * @param dc Count of characters to be deleted
+	 */
 	private void breakRepeatStrByDelete(int dc) {
 		int remainingDeletesToUse = dc;
 		int currentRepeatStrSize = 3;
@@ -265,6 +322,12 @@ public class PasswordChecker {
 		}
 	}
 	
+	/**
+	 * For substrings of the size 3, 4 & 5 (for input less than 6 char); we want to know
+	 * how chunks are present.
+	 * 
+	 * @return int
+	 */
 	private int charToBreakRepeatStr() {
 		int countToBreakRepeatStr = 0;
 		
@@ -285,6 +348,10 @@ public class PasswordChecker {
 		return countToBreakRepeatStr;
 	}
 	
+	/**
+	 * @return How many changes needed to confirm to the constraint that the argument
+	 * 			string should contain at least one lower case, one upper case and one digit.
+	 */
 	private int lowerUpperDigitCount() {
 		int result = 3;
 		if (foundLowerCase) {
@@ -299,6 +366,12 @@ public class PasswordChecker {
 		return result;
 	}
 	
+	/**
+	 * Updates the internal data structure where we track same char substrings of various lengths.
+	 * 
+	 * @param s Start index of the substring with same character
+	 * @param e End index of the substring
+	 */
 	private void count(int s, int e) {
 		int repeatSize = e - s;
 		if (repeatSize > 2) {
@@ -314,6 +387,9 @@ public class PasswordChecker {
 	}
 
 	/**
+	 * Unit tests. Leetcode has 42 unit test cases for this problem. As I fixed the code, I included failed
+	 * test cases here in the main.
+	 * 
 	 * @param args
 	 */
 	public static void main(String[] args) {
@@ -391,5 +467,4 @@ public class PasswordChecker {
     	System.out.println("Changes needed: " + cc);
     	assert(cc == 11);
 	}
-
 }
