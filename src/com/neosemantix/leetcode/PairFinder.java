@@ -30,6 +30,9 @@ public class PairFinder {
 		int[] sample1 = {2,5,7,6,8,4,9,11,7};
 		Node fn = pf.buildDoublyLinkedList(sample1);
 		List<Pair> pairsFound = pf.findPairs(fn, 14);
+		// Output for this sample is:
+		// Pair found: (5, 9)
+		// Pair found: (6, 8)
 	}
 	
 	/**
