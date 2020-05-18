@@ -150,11 +150,13 @@ Expected  Output:
 
 Input:  Balanced:  Using stack: 
 Input: <> Balanced: <> Using stack: <>
-Input: >> Balanced: <<>> Using stack: <<>>
+Input: >><<<< Balanced: <<>><<<<>>>> Using stack: <<>><<<<>>>>
+Input: >><<><>>>>>>< Balanced: <<<<<<>><<><>>>>>><> Using stack: <<>><><><><<<<>>>><>
 Input: <<<<>> Balanced: <<<<>>>> Using stack: <><><<>>
 Input: <<><><> Balanced: <<><><>> Using stack: <><><><>
 Input: <<<>< Balanced: <<<><>>> Using stack: <><<<>>>
 Input: <<><<<><<< Balanced: <<><<<><<<>>>>>> Using stack: <><><<<<<<>>>>>>
+
 		 */
 	}
 	
