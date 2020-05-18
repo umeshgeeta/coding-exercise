@@ -14,7 +14,7 @@ public class Balance {
 
 
 	public Balance() {
-		
+		// default constructor
 	}
 	
 	public String balanceUsingStack(String input) {
@@ -72,6 +72,14 @@ public class Balance {
 		return result;
 	}
 	
+	/**
+	 * We simply find difference in opening brackets and add those brackets: 
+	 * 	missing opening brackets always at the start and
+	 *  missing closing brackets always at the end.
+	 *  
+	 * @param input
+	 * @return String
+	 */
 	public String balance(String input) {
 		String result = "";
 		if (input != null && !input.isEmpty()) {
@@ -126,6 +134,9 @@ public class Balance {
 		input = "<<<><";
 		obj.output(input);
 		
+		input = "<<><<<><<<";
+		obj.output(input);
+		
 		/*
 		 
 Expected  Output:
@@ -136,7 +147,7 @@ Input: >> Balanced: <<>> Using stack: <<>>
 Input: <<<<>> Balanced: <<<<>>>> Using stack: <><><<>>
 Input: <<><><> Balanced: <<><><>> Using stack: <><><><>
 Input: <<<>< Balanced: <<<><>>> Using stack: <><<<>>>
-
+Input: <<><<<><<< Balanced: <<><<<><<<>>>>>> Using stack: <><><<<<<<>>>>>>
 		 */
 	}
 	
