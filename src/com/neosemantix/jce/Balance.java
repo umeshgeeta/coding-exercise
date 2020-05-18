@@ -93,6 +93,10 @@ public class Balance {
 				} else {
 					cb++;
 				}
+				if (ob < cb) {
+					output.insert(0, '<');
+					ob++;
+				}
 			}
 			while (ob < cb) {
 				output.append('<');
@@ -122,7 +126,10 @@ public class Balance {
 		input = "<>";
 		obj.output(input);
 		
-		input = ">>";
+		input = ">><<<<";
+		obj.output(input);
+		
+		input = ">><<><>>>>>><";
 		obj.output(input);
 		
 		input = "<<<<>>";
